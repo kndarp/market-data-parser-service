@@ -18,6 +18,13 @@
         <java.version>11</java.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub kndarp Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/kndarp/market-data-parser</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
