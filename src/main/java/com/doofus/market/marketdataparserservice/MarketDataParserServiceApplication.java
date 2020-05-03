@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MarketDataParserServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MarketDataParserServiceApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(MarketDataParserServiceApplication.class, args);
+  }
 }
