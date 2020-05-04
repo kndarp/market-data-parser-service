@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [ master ]
 
+env: 
+  IMAGE_NAME: kndarp/market-data-parser-service/market-data-parser-service
+
 jobs:
   build:
 
@@ -47,5 +50,3 @@ jobs:
         echo VERSION=$VERSION
         docker tag image $IMAGE_ID:$VERSION
         docker push $IMAGE_ID:$VERSION
-      env: 
-        IMAGE_NAME: kndarp/market-data-parser-service/market-data-parser-service
