@@ -10,7 +10,7 @@ on:
     branches: [ master ]
 
 env: 
-  IMAGE_NAME: kndarp/market-data-parser-service/market-data-parser-service
+  IMAGE_NAME: market-data-parser-service
 
 jobs:
   build:
