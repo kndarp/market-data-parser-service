@@ -4,7 +4,7 @@
 #
 # Set up secrets in your workspace: 
 
-name: Deployment
+name: deploy
 
 on:
   release:
