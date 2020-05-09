@@ -1,0 +1,59 @@
+# This workflow will build a docker container, publish it to Google Container Registry, and deploy it to Cloud Run when a release is created
+#
+# To configure this workflow:
+#
+# Set up secrets in your workspace: 
+
+name: Build and Deploy to Cloud Run
+
+on:
+  release:
+    types: [created]
+
+# Environment variables available to all jobs and steps in this workflow
+env:
+  PROJECT: ${{ secrets.PROJECT }}
+  EMAIL: ${{ secrets.EMAIL }}
+  GITHUB_SHA: ${{ github.sha }}
+  IMAGE: market-data-parser-service
+  REGISTRY_HOSTNAME: gcr.io
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '270.0.0'
+        service_account_email: ${{ secrets.EMAIL }}
+        service_account_key: ${{ secrets.KEY }}
+
+    # Configure docker to use the gcloud command-line tool as a credential helper
+    - run: |
+        # Set up docker to authenticate
+        # via gcloud command-line tool.
+        gcloud auth configure-docker
+      
+    # Build the Docker image
+    - name: Build
+      run: |        
+        docker build -t "$REGISTRY_HOSTNAME"/"$PROJECT"/"$IMAGE":"$GITHUB_SHA" \
+          --build-arg GITHUB_SHA="$GITHUB_SHA" \
+          --build-arg GITHUB_REF="$GITHUB_REF" .
+
+    # Push the Docker image to Google Container Registry
+    - name: Publish
+      run: |
+        docker push $REGISTRY_HOSTNAME/$PROJECT/$IMAGE:$GITHUB_SHA
+        
+
+#     # Deploy the Docker image to the GKE cluster
+#     - name: Deploy
+#       run: |
+#         gcloud run deploy market-data-parser-service --image $REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:${GITHUB_SHA} --platform managed
