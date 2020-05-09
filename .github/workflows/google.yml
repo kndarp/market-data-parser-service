@@ -65,7 +65,7 @@ jobs:
         docker push $REGISTRY_HOSTNAME/$PROJECT/$IMAGE:$GITHUB_SHA
         
 
-#     # Deploy the Docker image to the GKE cluster
-#     - name: Deploy
-#       run: |
-#         gcloud run deploy market-data-parser-service --image $REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:${GITHUB_SHA} --platform managed
+    # Deploy the Docker image to the Cloud Run
+    - name: Deploy
+      run: |
+        gcloud run deploy $IMAGE --image $REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:${GITHUB_SHA} --platform managed
